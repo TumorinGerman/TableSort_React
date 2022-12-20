@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Table } from "react-bootstrap";
 
-function App() {
+const App = ({ list }) => {
+  const clickHandle = (e) => {
+    console.log(e.target);
+  };
+
+  const [sortDirect, setSortDirect] = useState(null);
+  if (list.length === 0) {
+    return null;
+  }
+  const keys = Object.keys(list[0]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Table striped bordered hover variant="dark">
+      <thead>
+        <tr>
+          {keys.map((key, index) => (
+            <th onClick={clickHandle} key={index}>
+              {key}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {list.map((row, index) => (
+          <tr key={index}>
+            {keys.map((key, index) => (
+              <td key={index}>{row[key]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
-}
+};
 
 export default App;
