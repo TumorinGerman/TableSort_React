@@ -9,15 +9,18 @@ const App = ({ list }) => {
   const clickHandle = (index) => {
     const [...newTableRows] = tableRows;
     const key = keys[index];
-    isSortIncrease
-      ? newTableRows.sort((user1, user2) => (user1[key] > user2[key] ? 1 : -1))
-      : newTableRows.sort((user1, user2) => (user1[key] < user2[key] ? 1 : -1));
+    newTableRows.sort((user1, user2) => {
+      if (isSortIncrease) {
+        return user1[key] > user2[key] ? 1 : -1;
+      }
+      return user1[key] < user2[key] ? 1 : -1;
+    });
     setTableRows(newTableRows);
     const newSortDirection = !isSortIncrease;
     setSortDirect(newSortDirection);
   };
 
-  if (list.length === 0) {
+  if (!list || list.length === 0) {
     return null;
   }
 
@@ -26,17 +29,17 @@ const App = ({ list }) => {
       <thead>
         <tr>
           {keys.map((key, index) => (
-            <th onClick={() => clickHandle(index)} key={index} id={index}>
+            <th onClick={() => clickHandle(index)} key={key}>
               {key}
             </th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {tableRows.map((row, index) => (
-          <tr key={index}>
-            {keys.map((key, index) => (
-              <td key={index}>{row[key]}</td>
+        {tableRows.map((row) => (
+          <tr key={row.id}>
+            {keys.map((key) => (
+              <td key={key}>{row[key]}</td>
             ))}
           </tr>
         ))}
